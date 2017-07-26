@@ -1,0 +1,13 @@
+# Earth
+mass 5.974e24     
+xpos 1.496e11     
+ypos 0.0     
+xvel 30000.0      
+yvel 0.0     
+
+# Sun
+mass 1.989e30  
+xpos 0.0
+ypos 0.0 
+xvel 0.0
+yvel 0.0

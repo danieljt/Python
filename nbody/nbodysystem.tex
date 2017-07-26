@@ -1,0 +1,70 @@
+\documentclass{article}
+\author{Daniel James Tarplett}
+\title{FORCES IN SPACE ON N-BODY SYSTEMS AND ALGORITHMS}
+
+\usepackage{listings}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{amsmath}
+
+\lstset{
+language=Python,
+keywordstyle=\color{Purple},
+otherkeywords={*,self},
+commentstyle=\color{red},
+stringstyle=\color{Maroon},
+showstringspaces=false
+}
+
+\begin{document}
+\maketitle
+
+\section{Newtons second law on multiple bodies}
+Consider the system of N bodies in space. According to newtons laws, each body has a gravitational pull on one another. Lets call the masses
+\[m_i, i=0,1,2,...n-1\]
+where $i=0,1,2,...,(N-1)$. Each mass has a position in space from the origin given by:
+\[r_i, i=0,1,2,...,n-1\]
+where $i=0,1,2,...,(N-1)$. At any time, the forces on object i is the sum of all the other objects.
+\begin{equation}
+F_i = \sum_{j \neq i}^{n-1}\gamma \frac{m_im_j}{(|r_j-r_i|)^3}(\vec{r_j} - \vec{r_i})
+\end{equation}
+where $\gamma$ is newtons gravitational constant. The corresponding acceleration of mass i is then given by.
+\begin{equation}
+a_i = \sum_{j \neq i}^{n-1}\gamma \frac{m_j}{(|r_j-r_i|)^3}(\vec{r_j} - \vec{r_i})
+\end{equation}
+These are the equations required to compute an update scheme for the velocitie and positions. The next part to address in this problem is what kind of update scheme we should use.
+\section{Different schemes}
+Many schemes exist in the world of differential equations. Some are slow and robust, others are fast with slight issues. We will address the most important schemes in this section, and shed some light over their strengths and weaknesses.
+\section{Implementing the scheme in python}
+The text has so far presented the problem and it's algorithms. The next step of the work is to create a computer program for solving the problem. Because python is a simple program for implementing mathematics, and because it still keeps functions for more object oriented programming, we have chosen this language as our solver. At first we need to organize our code in a smart way to simplify the implementation. We set
+\begin{equation}
+r = 
+\begin{bmatrix}
+r_0 & r_1 & \ldots & r_{n-1}
+\end{bmatrix}
+\end{equation}
+where each row is the column vectors for the x and y components for mass i
+\begin{equation}
+r_i = 
+\begin{bmatrix}
+(r_{i,x0},r_{i,y0}) \\ (r_{i,x1},r_{i,y1}) \\ \vdots \\(r_{i,x(n-1)},r_{i,y(n-1)})
+\end{bmatrix}
+\end{equation}
+We have the similar set for the velocity components. The rest of the implementation is set around coding one of the algorithms and looking at the results. A test program for verifying the code can be implemented in the two body problem, which has an analytic solution for some simple cases. The use of the program is explained in the test program.
+\section{Verification by the two-body problem}
+From reading """CITE""", we know that the twobody problem is governed by the equations:
+\begin{align}
+\frac{\partial^2 r}{\partial t^2} - r\big(\frac{\partial\theta}{\partial t^2}\big)^2 &= -\frac{m}{r^2} \\
+\frac{\partial}{\partial t^2}\big(r^2\frac{\partial^2\theta}{\partial t^2}\big) &= 0
+\end{align}
+First, we make the substitution
+\begin{equation}
+h = r^2\frac{\partial \theta}{\partial t}
+\end{equation}
+and notice that this is the angular momentum. By using this, and solving the system of equations, we get the general solution:
+\begin{equation}
+r = \frac{h^2}{(m + Ah^2\cos(\theta - \omega))}
+\end{equation}
+where A and $\omega$ are constants that depend on the initial conditions of
+the motion.
+\end{document}
+
